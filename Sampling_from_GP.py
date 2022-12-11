@@ -78,10 +78,10 @@ def visualize_1d(x, f):
     plt.xlabel('x', fontsize=20)
     plt.ylabel('f', fontsize=20)
     plt.tick_params(labelsize=20)
-    plt.title('GP_sample_functions_1d', fontsize=20)
+    plt.title('Sample prior from GP (1d)', fontsize=20)
     plt.tight_layout()
     plt.show()
-    plt.savefig('GP_sample_functions_1d.jpeg')
+    # plt.savefig('Sample_prior_from_GP_1d.jpeg')
     plt.close()
 
 
@@ -92,11 +92,11 @@ def visualize_2d(x, y, f):
     ax.set_xlabel('x', fontsize=20)
     ax.set_ylabel('y', fontsize=20)
     ax.set_zlabel('f', fontsize=20)
-    ax.set_title('GP_sample_functions_2d', fontsize=20)
+    ax.set_title('Sample prior from GP (2d)', fontsize=20)
     ax.tick_params(labelsize=12)
     plt.tight_layout()
     plt.show()
-    fig.savefig('GP_sample_functions_2d.jpeg')
+    # fig.savefig('Sample_prior_from_GP_2d.jpeg')
     plt.close()
 
 
