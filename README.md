@@ -1,7 +1,7 @@
 # GP_regression
 
 ## Overview
-Python code about Gaussian process regression.
+ガウス過程回帰関連のコードをアップロードします。
 
 ## Scripts
 ### Sampling_from_GP.py
