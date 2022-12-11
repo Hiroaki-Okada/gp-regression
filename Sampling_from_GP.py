@@ -36,17 +36,26 @@ def rbf_kernel(x1, x2, lengthscale=1.0, outputscale=1.0):
     return outputscale * np.exp(-0.5 * dist ** 2 / (lengthscale ** 2))
 
 
+def white_kernel(x1, x2, scale=0.1):
+    delta = 1 if x1 == x2 else 2
+    return scale * delta
+
+
 def mean_function(x):
     return np.zeros(len(x))
 
 
-def kernel_function(x, kernel_func=rbf_kernel):
-    dim = x.shape[0]
-    kernel = np.empty((dim, dim))
+def kernel_function(x, kernel_func=rbf_kernel, white_noise=False):
+    n = x.shape[0]
+    kernel = np.empty((n, n))
 
-    for i in range(dim):
-        for j in range(i, dim):
-            kij = kernel_func(x[i], x[j])
+    for i in range(n):
+        for j in range(i, n):
+            if white_noise:
+                kij = kernel_func(x[i], x[j]) + white_kernel(x[i], x[j])
+            else:
+                kij = kernel_func(x[i], x[j])
+
             kernel[i, j] = kij
             kernel[j, i] = kij
 
