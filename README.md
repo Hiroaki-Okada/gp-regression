@@ -4,7 +4,7 @@
 ガウス過程回帰関連のコードをアップロードします。
 
 ## Scripts
-### Sampling_from_GP.py
+### Sample_prior_from_GP.py
 1次元, 2次元の入力空間において、ガウス過程の事前分布から関数をサンプリングします。  
 関数 kernel_function の引数 kernel_func で、使用したいカーネル関数を指定します。  
 
