@@ -184,6 +184,7 @@ def plot_prediction(train_x, train_y, test_x, test_y, mean, variance):
     # plt.savefig('Gaussian_process_regression.jpeg')
     plt.close()
 
+    
 def run(n=100):
     """
     学習データ (train_x, train_y) を用いてテストデータにおける出力を予測するガウス過程回帰を行う.
