@@ -24,21 +24,21 @@ def polynomial_kernel(x1, x2, offset=0, power=2):
 # Matern1 カーネル
 def matern1_kernel(x1, x2, lengthscale=1.0, outputscale=1.0):
     dist = np.linalg.norm(x1 - x2)
-    return np.exp(-dist / lengthscale)
+    return outputscale * np.exp(-dist / lengthscale)
 
 
 # Matern3 カーネル
 def matern3_kernel(x1, x2, lengthscale=1.0, outputscale=1.0):
     dist = np.linalg.norm(x1 - x2)
-    return (1 + np.sqrt(3) * dist / lengthscale) * \
-        np.exp(-np.sqrt(3) * dist / lengthscale)
+    return outputscale * (1 + np.sqrt(3) * dist / lengthscale) * \
+                      np.exp(-np.sqrt(3) * dist / lengthscale)
 
 
 # Matern5 カーネル
 def matern5_kernel(x1, x2, lengthscale=1.0, outputscale=1.0):
     dist = np.linalg.norm(x1 - x2)
-    return (1 + np.sqrt(5) * dist / lengthscale + (5 * dist ** 2) / (3 * lengthscale ** 2)) * \
-        np.exp(-np.sqrt(5) * dist / lengthscale)
+    return outputscale * (1 + np.sqrt(5) * dist / lengthscale + (5 * dist ** 2) / (3 * lengthscale ** 2)) * \
+                      np.exp(-np.sqrt(5) * dist / lengthscale)
 
 
 # RBF カーネル
