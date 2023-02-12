@@ -5,71 +5,12 @@ import math
 import warnings
 
 import numpy as np
-from scipy.stats import norm
 import matplotlib.pyplot as plt
 
+from kernels import *
+from acq_funcs import *
+
 np.random.seed(0)
-
-
-# 線形カーネル
-def linear_kernel(x1, x2, variance=1.0):
-    return variance * np.dot(x1, x2)
-
-
-# 多項式カーネル
-def polynomial_kernel(x1, x2, offset=0, power=2):
-    return (np.dot(x1, x2) + offset) ** power
-
-
-# Matern1 カーネル
-def matern1_kernel(x1, x2, lengthscale=1.0, outputscale=1.0):
-    dist = np.linalg.norm(x1 - x2)
-    return outputscale * np.exp(-dist / lengthscale)
-
-
-# Matern3 カーネル
-def matern3_kernel(x1, x2, lengthscale=1.0, outputscale=1.0):
-    dist = np.linalg.norm(x1 - x2)
-    return outputscale * (1 + np.sqrt(3) * dist / lengthscale) * \
-                      np.exp(-np.sqrt(3) * dist / lengthscale)
-
-
-# Matern5 カーネル
-def matern5_kernel(x1, x2, lengthscale=1.0, outputscale=1.0):
-    dist = np.linalg.norm(x1 - x2)
-    return outputscale * (1 + np.sqrt(5) * dist / lengthscale + (5 * dist ** 2) / (3 * lengthscale ** 2)) * \
-                      np.exp(-np.sqrt(5) * dist / lengthscale)
-
-
-# RBF カーネル
-def rbf_kernel(x1, x2, lengthscale=1.0, outputscale=1.0):
-    dist = np.linalg.norm(x1 - x2)
-    return outputscale * np.exp(-0.5 * dist ** 2 / (lengthscale ** 2))
-
-
-def white_kernel(idx1, idx2, scale=0.01):
-    """
-    White カーネル.
-    観測誤差を考慮する場合, カーネルの対角成分に足す小さな値を計算する.
-
-    Parameters
-    ----------
-    idx1 : int
-        カーネル行列の行インデックス
-    idx2 : int
-        カーネル行列の列インデックス
-    scale : float
-        スケーリング因子
-
-    Returns
-    ----------
-    float
-        対角成分に足す値
-    """
-
-    delta = 1 if idx1 == idx2 else 0
-    
-    return scale * delta
 
 
 def gp_regression(train_x, train_y, test_x, kernel_func=rbf_kernel, white_noise=True):
@@ -134,52 +75,12 @@ def gp_regression(train_x, train_y, test_x, kernel_func=rbf_kernel, white_noise=
         mean[i] = mean_i
         variance[i] = variance_i
 
-    """
     isNegative = variance < 0
     if np.any(isNegative):
-        warnings.warn('The predicted variance is less than 0. '
-                      'These values are set to 0.')
+        warnings.warn('The predicted variance is less than 0. These values are set to 0.')
         variance = np.where(variance >= 0, variance, 0.0)
-    """
 
     return mean, variance
-
-
-# EI 関数
-def ei(train_y, test_x, mean, variance, jitter=0.01):
-    best_y = np.max(train_y)
-    stdev = np.sqrt(variance) + 1e-6
-
-    z = (mean - best_y - jitter) / stdev
-    imp = mean - best_y - jitter
-
-    ei = imp * norm.cdf(z) + stdev * norm.pdf(z)
-
-    return ei
-
-
-# PI 関数
-def pi(train_y, test_x, mean, variance, jitter=0.01):
-    best_y = np.max(train_y)
-    stdev = np.sqrt(variance) + 1e-6
-
-    z = (mean - best_y - jitter) / stdev
-    cdf = norm.cdf(z)
-
-    return cdf
-
-
-# UCB 関数
-def ucb(train_y, test_x, mean, variance, jitter=0.01, delta=0.05):
-    stdev = np.sqrt(variance) + 1e-6
-
-    dim = 1
-    iters = len(train_y)
-
-    beta = np.sqrt(2 * np.log(dim * (iters**2) * (math.pi**2) / (6*delta)))
-    ucb = mean + beta * stdev
-
-    return ucb
 
 
 def evaluate_acq_function(train_y, test_x, mean, variance, acq_func=ei):

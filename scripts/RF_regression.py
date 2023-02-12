@@ -8,7 +8,7 @@ from sklearn.ensemble import RandomForestRegressor
 np.random.seed(0)
 
 
-def rf_regression(train_x, train_y, test_x, n_estimators=1000, max_features=1.0, max_depth=None):
+def rf_regression(train_x, train_y, test_x, n_estimators=100, max_features=1.0, max_depth=None):
     """
     学習データを用いてテストデータにおける出力を予測するランダムフォレスト回帰を行う.
     具体的には, テストデータにおける出力の予測分布を1つずつ計算していく.
