@@ -31,7 +31,7 @@ def pi(train_y, test_x, mean, variance, jitter=0.01):
 
 
 # UCB 関数
-def ucb(train_y, test_x, mean, variance, jitter=0.01, delta=0.05):
+def ucb(train_y, test_x, mean, variance, jitter=0.01, delta=0.5):
     stdev = np.sqrt(variance) + 1e-6
 
     dim = 1
